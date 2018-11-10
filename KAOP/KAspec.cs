@@ -31,18 +31,21 @@ namespace KAOP
                 string paramXMLstr = XMLSerializerToString(InParams[i], Encoding.UTF8);
                 Logger.Info(paramXMLstr);
             }
-        }
-
+        } 
         /// <summary>
         /// 后处理
         /// </summary> 
         public void EndExcute(string MethodName, object[] OutParams, object ReturnValue, Exception ex)
         {
-            Logger.Info(string.Format("返回值类型：{0}", ReturnValue));
+            Type myType = ReturnValue.GetType();
+            Logger.Info(string.Format("返回值类型：{0}", myType.Name));
             Logger.Info("返回值：");
-            string resXMLstr = DataContractSerializerToString(ReturnValue, Encoding.UTF8); 
-            Logger.Info(resXMLstr);
-
+            if (myType.Name != "Void")
+            {
+                string resXMLstr = DataContractSerializerToString(ReturnValue, Encoding.UTF8);
+                Logger.Info(resXMLstr);
+            }
+           
             if (OutParams.Count() > 0)//out 返回参数
             {
                 Logger.Info(string.Format("out返回参数数量：{0}", OutParams.Count())); 

@@ -11,38 +11,20 @@ namespace KAOPTest
     {
         static void Main(string[] args)
         {
-            TestAOP objAop = new TestAOP();
+            AOPTest test = new AOPTest();
             try
             {
-                objAop.Test2(1024);
-                objAop.Test3(1024);
+                test.KibaName = "Kiba518";
+                test.Test(518);
+                test.Test(-100);
 
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex.Message);
             }
             Console.ReadLine();
         }
     }
-    [Kiba]
-    public class TestAOP : ContextBoundObject
-    {
-        public void Test1()
-        {
-            Console.WriteLine("I'm Test1");
-        }
-        public int Test2(int para)
-        {
-            Console.WriteLine("I'm Test2");
-            return para * 2;
-        }
-        public int Test3(int para)
-        {
-            Console.WriteLine("I'm Test3");
-            //Action a = null;
-            //a.GetType();
-
-            return para + 1;
-        }
-    }
+   
 }

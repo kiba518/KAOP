@@ -20,6 +20,7 @@ namespace KAOP
         /// <returns>复合接收器链。</returns>
         public IMessageSink GetObjectSink(MarshalByRefObject obj, IMessageSink next)
         {
+            return next;
             return new KibaMessageSink(next);
         } 
         public bool IsNewContextOK(Context newCtx)

@@ -26,14 +26,28 @@ namespace KAOP
         } 
         public IMessage SyncProcessMessage(IMessage msg)
         { 
-            IMethodCallMessage call = msg as IMethodCallMessage;
+            IMethodCallMessage call = msg as IMethodCallMessage; 
             if (call != null)
             {
                 //拦截消息，做前处理
                 kaspec.PreExcute(call.MethodName, call.InArgs);
             }
+            for (int i = 0; i < call.InArgs.Count(); i++)
+            {
+                var para = call.InArgs[i];
+                var type = para.GetType();
+                string typename = type.ToString().Replace("System.Nullable`1[", "").Replace("]", "").Replace("System.", "").ToLower();
+                if (typename == "int32")
+                {
+                    int inparame = Convert.ToInt16(call.InArgs[i]);
+                    if (inparame < 0)
+                    {
+                        throw new Exception("异常");
+                    }
+                } 
+            }
             //传递消息给下一个接收器 
-            IMessage retMsg = nextSink.SyncProcessMessage(msg);   
+            IMessage retMsg = nextSink.SyncProcessMessage(call as IMessage);   
             IMethodReturnMessage dispose = retMsg as IMethodReturnMessage;
             if (dispose != null)
             { 
